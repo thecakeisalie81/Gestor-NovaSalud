@@ -1,8 +1,10 @@
 <?php
 
-class Doctor extends Usuario
+class Admin extends Usuario
 {
-    private string $specialty;
+    private string $lastLogin;
+    private int $activityLog;
+
     public function __construct($name, $age, $phone, $email, $password, $rol, $specialty)
     {
         parent::__construct($name, $age, $phone, $email, $password, $rol);

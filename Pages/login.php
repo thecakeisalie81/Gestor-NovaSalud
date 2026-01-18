@@ -35,13 +35,13 @@
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features</p>
+                    <h1>Bienvenido!</h1>
+                    <p>Registre sus datos para poder hacer crear su cuenta</p>
                     <button class="hidden" id="login">Sign In</button>
                 </div>
                 <div class="toggle-panel toggle-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of site features</p>
+                    <h1>Bienvenido devuelta!</h1>
+                    <p>Ingrese sus datos para hacer uso del sistema</p>
                     <button class="hidden" id="register">Sign Up</button>
                 </div>
             </div>
