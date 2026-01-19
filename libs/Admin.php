@@ -5,18 +5,28 @@ class Admin extends Usuario
     private string $lastLogin;
     private int $activityLog;
 
-    public function __construct($name, $age, $phone, $email, $password, $rol, $specialty)
+    public function __construct($id, $name, $age, $phone, $email, $password, $rol, $lastLogin, $activityLog)
     {
-        parent::__construct($name, $age, $phone, $email, $password, $rol);
-        $this->specialty = $specialty;
+        parent::__construct($id, $name, $age, $phone, $email, $password, $rol);
+        $this->lastLogin = $lastLogin;
+        $this->activityLog = $activityLog;
     }
 
-    public function getSpecialty(): string
+    public function getLastLogin(): string
     {
-        return $this->specialty;
+        return $this->lastLogin;
     }
-    public function setName($specialty)
+    public function setLastLogin($lastLogin)
     {
-        $this->specialty = $specialty;
+        $this->lastLogin = $lastLogin;
+    }
+
+    public function getActivityLog(): int
+    {
+        return $this->activityLog;
+    }
+    public function setActivityLog($activityLog)
+    {
+        $this->activityLog = $activityLog;
     }
 }

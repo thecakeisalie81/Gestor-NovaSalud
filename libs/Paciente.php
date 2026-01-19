@@ -3,9 +3,9 @@
 class Paciente extends Usuario
 {
     private string $address;
-    public function __construct($name, $age, $phone, $email, $password, $rol, $address)
+    public function __construct($id, $name, $age, $phone, $email, $password, $rol, $address)
     {
-        parent::__construct($name, $age, $phone, $email, $password, $rol);
+        parent::__construct($id, $name, $age, $phone, $email, $password, $rol);
         $this->address = $address;
     }
 
@@ -13,8 +13,8 @@ class Paciente extends Usuario
     {
         return $this->address;
     }
-    public function setName($name)
+    public function setAddress($address)
     {
-        $this->name = $name;
+        $this->address = $address;
     }
 }

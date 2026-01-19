@@ -21,66 +21,66 @@ class Cita
         $this->description = $description;
     }
 
-    public function get(): string
+    public function getId(): int
     {
-        return $this->;
+        return $this->id;
     }
-    public function set($)
+    public function setId($id)
     {
-        $this-> = $;
-    }
-
-    public function get(): string
-    {
-        return $this->;
-    }
-    public function set($)
-    {
-        $this-> = $;
+        $this->id = $id;
     }
 
-    public function get(): string
+    public function getDate(): string
     {
-        return $this->;
+        return $this->date;
     }
-    public function set($)
+    public function setDate($date)
     {
-        $this-> = $;
-    }
-
-    public function get(): string
-    {
-        return $this->;
-    }
-    public function set($)
-    {
-        $this-> = $;
+        $this->date = $date;
     }
 
-    public function get(): string
+    public function getHour(): string
     {
-        return $this->;
+        return $this->hour;
     }
-    public function set($)
+    public function setHour($hour)
     {
-        $this-> = $;
-    }
-
-    public function get(): string
-    {
-        return $this->;
-    }
-    public function set($)
-    {
-        $this-> = $;
+        $this->hour = $hour;
     }
 
-    public function get(): string
+    public function getPaciente(): int
     {
-        return $this->;
+        return $this->paciente;
     }
-    public function set($)
+    public function setPaciente($paciente)
     {
-        $this-> = $;
+        $this->paciente = $paciente;
+    }
+
+    public function getDoctor(): int
+    {
+        return $this->doctor;
+    }
+    public function setDoctor($doctor)
+    {
+        $this->doctor = $doctor;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+    public function set($description)
+    {
+        $this->description = $description;
     }
 }
