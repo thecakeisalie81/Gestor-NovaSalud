@@ -2,7 +2,9 @@
 
 abstract class Usuario
 {
-    private int $id;
+    protected $conn;
+    protected $table;
+    protected ?int $id = null;
     protected string $name;
     protected int $age;
     protected int $phone;
@@ -10,18 +12,19 @@ abstract class Usuario
     protected string $password;
     protected string $rol;
 
-    public function __construct($id, $name, $age, $phone, $email, $password, $rol)
+
+    public function __construct($table, $db, $name, $age, $phone, $email, $rol)
     {
-        $this->id = $id;
+        $this->conn = $db;
+        $this->table = $table;
         $this->name = $name;
         $this->age = $age;
         $this->phone = $phone;
         $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->rol = $rol;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -83,5 +86,18 @@ abstract class Usuario
     public function setRol($rol)
     {
         $this->rol = $rol;
+    }
+
+    abstract public function create();
+    abstract public function update();
+    protected function delete()
+    {
+        if ($this->id === null) {
+            throw new Exception("No se puede eliminar sin ID");
+        }
+        $query = "DELETE FROM " . $this->table . " WHERE id=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $this->id);
+        return $stmt->execute();
     }
 }

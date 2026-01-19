@@ -2,7 +2,9 @@
 
 class Cita
 {
-    private int $id;
+    protected $conn;
+    protected $table;
+    private ?int $id = null;
     private string $date;
     private string $hour;
     private int $paciente;
@@ -10,9 +12,10 @@ class Cita
     private string $state;
     private string $description;
 
-    public function __construct($id, $date, $hour, $paciente, $doctor, $state, $description)
+    public function __construct($table, $db, $date, $hour, $paciente, $doctor, $state, $description)
     {
-        $this->id = $id;
+        $this->conn = $db;
+        $this->table = $table;
         $this->date = $date;
         $this->hour = $hour;
         $this->paciente = $paciente;
@@ -21,7 +24,7 @@ class Cita
         $this->description = $description;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -79,8 +82,43 @@ class Cita
     {
         return $this->description;
     }
-    public function set($description)
+    public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function create()
+    {
+        $query = "INSERT INTO " . $this->table . " (fecha, hour, paciente, doctor, state, description) VALUES (?, ? ,?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('ssiiss', $this->date, $this->hour, $this->paciente, $this->doctor, $this->state, $this->description);
+        if ($stmt->execute()) {
+            $this->id = $this->conn->insert_id;
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update()
+    {
+        if ($this->id === null) {
+            throw new Exception("No se puede actualizar sin ID");
+        }
+        $query = "UPDATE " . $this->table . " SET fecha=?, hour=?, paciente=?, doctor=?, state=?, description=?  WHERE id=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('ssiissi', $this->date, $this->hour, $this->paciente, $this->doctor, $this->state, $this->description, $this->id);
+        return $stmt->execute();
+    }
+
+    public function delete()
+    {
+        if ($this->id === null) {
+            throw new Exception("No se puede eliminar sin ID");
+        }
+        $query = "DELETE FROM " . $this->table . " WHERE id=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $this->id);
+        return $stmt->execute();
     }
 }

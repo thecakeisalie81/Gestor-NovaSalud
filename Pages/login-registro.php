@@ -15,19 +15,19 @@
         <div class="form-container sign-up">
             <form>
                 <h1>Create Account</h1>
-                <span>or use your email for registeration</span>
-                <input type="text" placeholder="Name">
+                <input type="text" placeholder="Nombre">
+                <input type="number" placeholder="Edad">
+                <input type="number" placeholder="Numero telefonico">
                 <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Contraseña">
                 <button>Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
             <form>
                 <h1>Sign In</h1>
-                <span>or use your email password</span>
                 <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Contraseña">
                 <a href="#">Forget Your Password?</a>
                 <button>Sign In</button>
             </form>
