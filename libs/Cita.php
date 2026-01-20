@@ -116,9 +116,10 @@ class Cita
         if ($this->id === null) {
             throw new Exception("No se puede eliminar sin ID");
         }
-        $query = "DELETE FROM " . $this->table . " WHERE id=?";
+        $query = "UPDATE " . $this->table . " SET state=? WHERE id=?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $this->id);
+        $finalState = "finalizada";
+        $stmt->bind_param('si', $finalState, $this->id);
         return $stmt->execute();
     }
 }
