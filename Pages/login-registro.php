@@ -1,3 +1,113 @@
+<?php
+require_once("../system/init.php");
+require_once('../libs/Usuario.php');
+require_once('../libs/Paciente.php');
+
+session_start();
+if (isset($_POST['login'])) {
+
+    $email = $_POST['email_log'];
+    $pass  = $_POST['pass_log'];
+
+    function intentarLogin($conn, $tabla, $email, $pass, $rol)
+    {
+
+        $sql = "SELECT id, pass FROM $tabla WHERE email = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        if ($row = mysqli_fetch_assoc($result)) {
+
+            if (password_verify($pass, $row['pass'])) {
+                $_SESSION['id']  = $row['id'];
+                $_SESSION['rol'] = $rol;
+                mysqli_stmt_close($stmt);
+                return true;
+            }
+        }
+
+        mysqli_stmt_close($stmt);
+        return false;
+    }
+
+    if (
+        intentarLogin($conn, 'paciente', $email, $pass, 'paciente') ||
+        intentarLogin($conn, 'doctor',   $email, $pass, 'doctor')   ||
+        intentarLogin($conn, 'admin',    $email, $pass, 'admin')
+    ) {
+
+        switch ($_SESSION['rol']) {
+            case 'paciente':
+                header("Location: paciente/dashboard.php");
+                break;
+            case 'doctor':
+                header("Location: doctor/dashboard.php");
+                break;
+            case 'admin':
+                header("Location: admin/dashboard.php");
+                break;
+        }
+        exit;
+    } else {
+        echo "Credenciales inválidas";
+    }
+
+    mysqli_close($conn);
+}
+
+if (isset($_POST['signup'])) {
+
+    $name  = trim($_POST['name']);
+    $age   = (int) $_POST['age'];
+    $phone = (int) $_POST['phone'];
+    $email = trim($_POST['email']);
+    $pass  = $_POST['pass'];
+    $rol     = 'paciente';
+    $address = trim($_POST['address']);
+
+
+    $check = $conn->prepare("SELECT id FROM paciente WHERE email = ?");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $check->store_result();
+
+    if ($check->num_rows > 0) {
+        echo "El correo ya está registrado";
+        exit;
+    }
+    $check->close();
+
+    try {
+        $paciente = new Paciente(
+            $conn,
+            $name,
+            $age,
+            $phone,
+            $email,
+            $rol,
+            $address
+        );
+
+        $paciente->setPassword($pass);
+
+        if ($paciente->create()) {
+
+            $_SESSION['id']  = $paciente->getId();
+            $_SESSION['rol'] = 'paciente';
+            header("Location: paciente/dashboard.php");
+            exit;
+        } else {
+            echo "Error al registrar el paciente";
+        }
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,30 +116,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/login.css">
-    <title>Modern Login Page | AsmrProg</title>
+    <title>Ingresar</title>
 </head>
 
 <body>
 
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form method="post">
                 <h1>Create Account</h1>
-                <input type="text" placeholder="Nombre">
-                <input type="number" placeholder="Edad">
-                <input type="number" placeholder="Numero telefonico">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Contraseña">
-                <button>Sign Up</button>
+                <input name="name" type="text" placeholder="Nombre" required>
+                <input name="age" type="number" placeholder="Edad" required>
+                <input name="phone" type="number" placeholder="Numero telefonico" required>
+                <input name="email" type="email" placeholder="Email" required>
+                <input name="pass" type="password" placeholder="Contraseña" required>
+                <input name="address" type="text" placeholder="Direccion" required>
+                <button name="signup" type="submit">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form method="post">
                 <h1>Sign In</h1>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Contraseña">
+                <input name="email_log" type="email" placeholder="Email">
+                <input name="pass_log" type="password" placeholder="Contraseña">
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <button name="login" type="submit">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
