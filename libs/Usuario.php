@@ -101,6 +101,9 @@ abstract class Usuario
         $stmt = $this->conn->prepare($query);
         $finalState = "Inactivo";
         $stmt->bind_param('si', $finalState, $this->id);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return $stmt->affected_rows > 0;
+        }
+        return false;
     }
 }
