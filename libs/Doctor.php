@@ -3,7 +3,7 @@
 class Doctor extends Usuario
 {
     private string $specialty;
-    public function __construct($db, $name, $age, $phone, $email, $rol, $specialty, $state)
+    public function __construct($db, $name, $age, $phone, $email, $rol, $specialty, $state = null)
     {
         parent::__construct('doctor', $db, $name, $age, $phone, $email, $rol, $state);
         $this->specialty = $specialty;

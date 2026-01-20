@@ -5,7 +5,7 @@ class Admin extends Usuario
     private string $lastLogin;
     private int $activityLog;
 
-    public function __construct($db, $name, $age, $phone, $email, $rol, $lastLogin, $activityLog, $state)
+    public function __construct($db, $name, $age, $phone, $email, $rol, $lastLogin, $activityLog, $state = null)
     {
         parent::__construct('admin', $db, $name, $age, $phone, $email, $rol, $state);
         $this->lastLogin = $lastLogin;

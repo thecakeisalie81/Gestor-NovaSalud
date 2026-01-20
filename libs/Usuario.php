@@ -11,10 +11,10 @@ abstract class Usuario
     protected string $email;
     protected string $password;
     protected string $rol;
-    protected string $state;
+    protected ?string $state;
 
 
-    public function __construct($table, $db, $name, $age, $phone, $email, $rol, $state)
+    public function __construct($table, $db, $name, $age, $phone, $email, $rol, $state = null)
     {
         $this->conn = $db;
         $this->table = $table;
