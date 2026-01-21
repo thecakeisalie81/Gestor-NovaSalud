@@ -11,21 +11,21 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 switch ($method) {
     case 'GET':
-        OBTENERDOCTOR($conn);
+        OBTENERADMIN($conn);
         break;
     case 'POST':
-        CREARDOCTOR($conn, $input);
+        CREARADMIN($conn, $input);
         break;
     case 'PUT':
-        ACTUALIZARDOCTOR($conn, $input);
+        ACTUALIZARADMIN($conn, $input);
         break;
     case 'DELETE':
-        BORRARDOCTOR($conn, $input);
+        BORRARADMIN($conn, $input);
         break;
 }
 
 
-function OBTENERDOCTOR($conn)
+function OBTENERADMIN($conn)
 {
     $query = "SELECT * FROM admin";
     $stmt = $conn->prepare($query);
@@ -36,10 +36,26 @@ function OBTENERDOCTOR($conn)
 }
 
 
-function CREARDOCTOR($conn, $input) {}
-function ACTUALIZARDOCTOR($conn, $input) {}
+function CREARADMIN($conn, $input)
+{
+    if (!$input) {
+        http_response_code(400);
+        echo json_encode(["error" => "Datos inválidos"]);
+        exit;
+    }
 
-function BORRARDOCTOR($conn, $input)
+    $admin = new Admin($conn, $input['name'], $input['age'], $input['phone'], $input['email'], $input['rol'], $input['lastLogin']);
+    $admin->setPassword($input['pass']);
+    if ($admin->create()) {
+        http_response_code(201);
+        echo json_encode(["success" => true, "id" => $admin->getId()]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["success" => false, "error" => "No se pudo crear el Doctor"]);
+    }
+}
+
+function ACTUALIZARADMIN($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
         http_response_code(400);
@@ -47,7 +63,28 @@ function BORRARDOCTOR($conn, $input)
         exit;
     }
 
-    $admin = new Admin($conn, "", 0, 0, "", "", "", "");
+    $admin = new Admin($conn, $input['name'], $input['age'], $input['phone'], $input['email'], $input['rol'], $input['lastLogin']);
+    $admin->setPassword($input['pass']);
+    $admin->setId((int)$input['id']);
+
+    if ($admin->update()) {
+        http_response_code(200);
+        echo json_encode(["success" => true, "message" => "Datos del administrador actualizados"]);
+    } else {
+        http_response_code(404);
+        echo json_encode(["success" => false, "error" => "Administrador no encontrado"]);
+    }
+}
+
+function BORRARADMIN($conn, $input)
+{
+    if (!$input || !isset($input['id'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Falta ID o datos inválidos"]);
+        exit;
+    }
+
+    $admin = new Admin($conn, "", 0, 0, "", "", "");
     $admin->setId((int)$input['id']);
 
     if ($admin->delete()) {

@@ -3,13 +3,11 @@
 class Admin extends Usuario
 {
     private string $lastLogin;
-    private int $activityLog;
 
-    public function __construct($db, $name, $age, $phone, $email, $rol, $lastLogin, $activityLog, $state = null)
+    public function __construct($db, $name, $age, $phone, $email, $rol, $lastLogin, $state = null)
     {
         parent::__construct('admin', $db, $name, $age, $phone, $email, $rol, $state);
         $this->lastLogin = $lastLogin;
-        $this->activityLog = $activityLog;
     }
 
     public function getLastLogin(): string
@@ -21,23 +19,15 @@ class Admin extends Usuario
         $this->lastLogin = $lastLogin;
     }
 
-    public function getActivityLog(): int
-    {
-        return $this->activityLog;
-    }
-    public function setActivityLog($activityLog)
-    {
-        $this->activityLog = $activityLog;
-    }
 
     public function create()
     {
         if (!isset($this->password)) {
             throw new Exception("Debe asignar password antes de crear el admin");
         }
-        $query = "INSERT INTO " . $this->table . " (name, age, phone, email, pass, rol, lastLogin, activityLog) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO " . $this->table . " (name, age, phone, email, pass, rol, lastLogin) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('siissssi', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->lastLogin, $this->activityLog);
+        $stmt->bind_param('siissss', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->lastLogin);
         if ($stmt->execute()) {
             $this->id = $this->conn->insert_id;
             return true;
@@ -51,9 +41,12 @@ class Admin extends Usuario
         if ($this->id === null) {
             throw new Exception("No se puede actualizar sin ID");
         }
-        $query = "UPDATE " . $this->table . " SET name=?, age=?, phone=?, email=?, pass=?, rol=?, lastLogin=?, activityLog=?   WHERE id=?";
+        $query = "UPDATE " . $this->table . " SET name=?, age=?, phone=?, email=?, pass=?, rol=?, lastLogin=?   WHERE id=?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('siisssisi', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->lastLogin, $this->activityLog, $this->id);
-        return $stmt->execute();
+        $stmt->bind_param('siissssi', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->lastLogin, $this->id);
+        if ($stmt->execute()) {
+            return $stmt->affected_rows > 0;
+        }
+        return false;
     }
 }
