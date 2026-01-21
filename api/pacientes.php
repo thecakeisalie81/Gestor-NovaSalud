@@ -54,7 +54,26 @@ function CREARPACIENTE($conn, $input)
         echo json_encode(["success" => false, "error" => "No se pudo crear el Doctor"]);
     }
 }
-function ACTUALIZARPACIENTE($conn, $input) {}
+function ACTUALIZARPACIENTE($conn, $input)
+{
+    if (!$input || !isset($input['id'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Falta ID o datos inválidos"]);
+        exit;
+    }
+
+    $paciente = new Paciente($conn, $input['name'], $input['age'], $input['phone'], $input['email'], $input['rol'], $input['address']);
+    $paciente->setPassword($input['pass']);
+    $paciente->setId((int)$input['id']);
+
+    if ($paciente->update()) {
+        http_response_code(200);
+        echo json_encode(["success" => true, "message" => "Datos del paciente actualizados"]);
+    } else {
+        http_response_code(404);
+        echo json_encode(["success" => false, "error" => "Paciente no encontrado"]);
+    }
+}
 function BORRARPACIENTE($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
