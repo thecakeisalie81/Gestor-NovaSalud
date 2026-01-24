@@ -27,12 +27,13 @@ switch ($method) {
 
 function OBTENERDOCTOR($conn)
 {
-    $query = "SELECT * FROM doctor";
+    $query = "SELECT * FROM doctor WHERE state = 'Activo'";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);
-    echo json_encode($rows);
+    $response = ["total" => count($rows), "data" => $rows];
+    echo json_encode($response);
 }
 
 

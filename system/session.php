@@ -1,7 +1,12 @@
 <?php
+
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+
 session_start();
-if (!isset($_SESSION['id_usuario'])) {
-    header("Location: Login.php");
+if (!isset($_SESSION['id']) || !isset($_SESSION['rol'])) {
+    header("Location: /PROYECTO_BACKEND/Pages/login-registro.php");
     exit();
 }
 
