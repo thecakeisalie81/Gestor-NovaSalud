@@ -21,15 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         icon: "bx bx-home-heart",
         text: "Dashboard",
-        link: "paciente/dashboard.php",
+        link: "./dashboard.php",
       },
-      { icon: "bx bx-book-add", text: "Mis citas", link: "paciente/citas.php" },
+      { icon: "bx bx-book-add", text: "Mis citas", link: "./mis_citas.php" },
     ],
     doctor: [
       {
         icon: "bx bx-home-heart",
         text: "Dashboard",
-        link: "doctor/dashboard.php",
+        link: "./dashboard.php",
       },
       {
         icon: "bx bx-book-add",
