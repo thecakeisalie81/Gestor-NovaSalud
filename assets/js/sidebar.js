@@ -34,12 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         icon: "bx bx-book-add",
         text: "Asignar cita",
-        link: "doctor/asignar.php",
+        link: "./asignar_cita.php",
       },
       {
         icon: "bx bx-male-female",
-        text: "Pacientes",
-        link: "doctor/pacientes.php",
+        text: "Calendario de citas",
+        link: "./citas_asignadas.php",
       },
     ],
     admin: [
