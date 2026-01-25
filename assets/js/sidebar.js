@@ -46,14 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         icon: "bx bx-home-heart",
         text: "Dashboard",
-        link: "admin/dashboard.php",
+        link: "./dashboard.php",
       },
       {
         icon: "bx bx-male-female",
         text: "Doctores",
-        link: "admin/doctores.php",
+        link: "./doctores.php",
       },
-      { icon: "bx bx-user", text: "Usuarios", link: "admin/usuarios.php" },
+      { icon: "bx bx-user", text: "Usuarios", link: "./usuarios.php" },
     ],
   };
 
