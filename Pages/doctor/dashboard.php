@@ -8,11 +8,11 @@ foreach ($pacientes as $paciente) {
     $pacientesMap[$paciente['id']] = $paciente['name'];
 }
 
-//Trae todas las citas y filtra las que son del doctor logeado
+//Trae todas las citas y filtra las que son del doctor logeado, ademas de ser citas confirmadas
 $response = file_get_contents("http://localhost/Proyecto_Backend/api/citas.php");
 $data = json_decode($response, true);
 $misCitas = array_filter($data, function ($cita) {
-    return isset($cita['doctor']) && $cita['doctor'] === $_SESSION['id'];
+    return isset($cita['doctor']) && $cita['doctor'] === $_SESSION['id'] && $cita['state'] === 'confirmada';
 });
 $totalCitasPaciente = count($misCitas);
 
@@ -25,14 +25,6 @@ $citasHoy = array_filter($misCitas, function ($cita) use ($hoy) {
 $totalHoy = count($citasHoy);
 
 //Sirve  para mostrar los mombres de los pacientes que hay en las citas de hoy
-foreach ($citasHoy as $cita) {
-    $nombrePaciente = $pacientesMap[$cita['paciente']] ?? 'Paciente desconocido';
-
-    $listaCitasHoy[] = [
-        $nombrePaciente
-    ];
-}
-
 foreach ($citasHoy as &$cita) {
     $cita['paciente_nombre'] = $pacientesMap[$cita['paciente']] ?? '';
 }
@@ -93,7 +85,7 @@ unset($cita);
                     <i class='bx bx-calendar-check'></i>
                     <span class="text">
                         <h3><?php echo $totalCitasPaciente ?></h3>
-                        <p>Citas agendadas</p>
+                        <p>Total de citas agendadas</p>
                     </span>
                 </li>
             </ul>
@@ -102,7 +94,7 @@ unset($cita);
             <div class="table-data">
                 <div class="order">
                     <div class="head">
-                        <h3>Citas de hoy <?php echo count($citasHoy) ?></h3>
+                        <h3>Citas de hoy</h3>
                         <i class='bx bx-search'></i>
                         <i class='bx bx-filter'></i>
                     </div>

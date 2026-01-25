@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Doctores",
         link: "./doctores.php",
       },
-      { icon: "bx bx-user", text: "Usuarios", link: "./usuarios.php" },
+      { icon: "bx bx-user", text: "Pacientes", link: "./usuarios.php" },
     ],
   };
 

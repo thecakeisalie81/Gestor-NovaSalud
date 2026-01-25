@@ -43,23 +43,11 @@ $citasHoy = array_filter($data, function ($cita) use ($hoy) {
 $totalHoy = count($citasHoy);
 
 //Sirve  para mostrar los nombres de doctor y paciente que hay en las citas de hoy
-foreach ($citasHoy as $cita) {
-
-    $nombreDoctor = $doctoresMap[$cita['doctor']] ?? 'Doctor desconocido';
-    $nombrePaciente = $pacientesMap[$cita['paciente']] ?? 'Paciente desconocido';
-
-    $listaCitasHoy[] = [
-        $nombreDoctor,
-        $nombrePaciente
-    ];
-}
-
 foreach ($citasHoy as &$cita) {
     $cita['doctor_nombre']   = $doctoresMap[$cita['doctor']] ?? '';
     $cita['paciente_nombre'] = $pacientesMap[$cita['paciente']] ?? '';
 }
 unset($cita);
-
 
 //
 ?>
