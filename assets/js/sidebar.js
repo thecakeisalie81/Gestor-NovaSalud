@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         icon: "bx bx-book-add",
         text: "Nueva cita",
-        link: "./asignar_cita.php",
+        link: "./solicitud_cita.php",
       },
     ],
     doctor: [

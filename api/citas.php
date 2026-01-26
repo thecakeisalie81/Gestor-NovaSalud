@@ -12,12 +12,15 @@ switch ($method) {
         OBTENERCITA($conn);
         break;
     case 'POST':
+        validarSesion();
         CREARCITA($conn, $input);
         break;
     case 'PUT':
+        validarSesion();
         ACTUALIZARCITA($conn, $input);
         break;
     case 'DELETE':
+        validarSesion();
         BORRARCITA($conn, $input);
         break;
 }
@@ -32,24 +35,84 @@ function OBTENERCITA($conn)
     echo json_encode($rows);
 }
 
+
+function validarSesion()
+{
+    include_once("../system/session.php");
+    if (!isset($_SESSION['id'], $_SESSION['rol'])) {
+        http_response_code(401);
+        echo json_encode(["error" => "No autorizado"]);
+        exit;
+    }
+}
+
 function CREARCITA($conn, $input)
 {
+    if (!isset($_SESSION['id'], $_SESSION['rol'])) {
+        http_response_code(401);
+        echo json_encode(["error" => "No autorizado"]);
+        exit;
+    }
+
     if (!$input) {
         http_response_code(400);
         echo json_encode(["error" => "Datos inválidos"]);
         exit;
     }
 
-    $cita = new Cita('cita', $conn, $input['fecha'], $input['hour'], $input['paciente'], $input['doctor'], $input['state'], $input['description']);
+    // Valores por defecto
+    $paciente = $input['paciente'] ?? null;
+    $doctor   = $input['doctor'] ?? null;
+
+    // 🎭 Lógica según rol
+    if ($_SESSION['rol'] === 'paciente') {
+        $paciente = $_SESSION['id'];
+
+        if (!$doctor) {
+            http_response_code(400);
+            echo json_encode(["error" => "Debe seleccionar un doctor"]);
+            exit;
+        }
+    } elseif ($_SESSION['rol'] === 'doctor') {
+        $doctor = $_SESSION['id'];
+
+        if (!$paciente) {
+            http_response_code(400);
+            echo json_encode(["error" => "Debe seleccionar un paciente"]);
+            exit;
+        }
+    } else {
+        http_response_code(403);
+        echo json_encode(["error" => "Rol no permitido"]);
+        exit;
+    }
+
+    $cita = new Cita(
+        'cita',
+        $conn,
+        $input['fecha'],
+        $input['hour'],
+        $paciente,
+        $doctor,
+        $input['state'],
+        $input['description']
+    );
 
     if ($cita->create()) {
         http_response_code(201);
-        echo json_encode(["success" => true, "id" => $cita->getId()]);
+        echo json_encode([
+            "success" => true,
+            "id" => $cita->getId()
+        ]);
     } else {
         http_response_code(500);
-        echo json_encode(["success" => false, "error" => "No se pudo crear la cita"]);
+        echo json_encode([
+            "success" => false,
+            "error" => "No se pudo crear la cita"
+        ]);
     }
 }
+
 
 function ACTUALIZARCITA($conn, $input)
 {
