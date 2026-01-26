@@ -23,7 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Dashboard",
         link: "./dashboard.php",
       },
-      { icon: "bx bx-book-add", text: "Mis citas", link: "./mis_citas.php" },
+      {
+        icon: "bx bx-calendar-check",
+        text: "Mis citas",
+        link: "./mis_citas.php",
+      },
+      {
+        icon: "bx bx-book-add",
+        text: "Nueva cita",
+        link: "./asignar_cita.php",
+      },
     ],
     doctor: [
       {
