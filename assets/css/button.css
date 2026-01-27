@@ -1,0 +1,55 @@
+.btn-aprobado {
+  background-color: #c8e6c9; /* verde pastel */
+  color: #2f4f4f; /* gris oscuro para contraste */
+  padding: 6px 14px; /* tamaño pequeño */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* espacio entre icono y texto */
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+.btn-aprobado:hover {
+  background-color: #a5d6a7; /* verde pastel más oscuro */
+  transform: scale(1.05);
+}
+.btn-aprobado:active {
+  background-color: #81c784; /* verde más intenso */
+  transform: scale(0.95);
+}
+.btn-aprobado i {
+  font-size: 16px; /* tamaño del icono */
+}
+
+.btn-noaprobado {
+  background-color: #ffcdd2; /* rojo pastel */
+  color: #2f4f4f; /* gris oscuro para contraste */
+  padding: 6px 14px; /* tamaño pequeño */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* espacio entre icono y texto */
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+.btn-noaprobado:hover {
+  background-color: #ef9a9a; /* rojo pastel más oscuro */
+  transform: scale(1.05);
+}
+.btn-noaprobado:active {
+  background-color: #e57373; /* rojo más intenso */
+  transform: scale(0.95);
+}
+.btn-noaprobado i {
+  font-size: 16px; /* tamaño del icono */
+}

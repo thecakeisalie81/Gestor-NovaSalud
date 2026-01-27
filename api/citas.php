@@ -110,15 +110,18 @@ function CREARCITA($conn, $input)
 
 function ACTUALIZARCITA($conn, $input)
 {
-
-    if (!$input || !isset($input['id'])) {
+    if (!$input || !isset($input['id'], $input['state'])) {
         http_response_code(400);
-        echo json_encode(["error" => "Falta ID o datos inválidos"]);
+        echo json_encode(["error" => "Falta ID o state"]);
         exit;
     }
-    $cita = new Cita('cita', $conn, $input['fecha'], $input['hour'], $input['paciente'], $input['doctor'], $input['state'], $input['description']);
-    $cita->setId($input['id']);
-    if ($cita->update()) {
+
+    // Solo actualizar el estado
+    $query = "UPDATE cita SET state = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("si", $input['state'], $input['id']);
+
+    if ($stmt->execute() && $stmt->affected_rows > 0) {
         http_response_code(200);
         echo json_encode(["success" => true]);
     } else {

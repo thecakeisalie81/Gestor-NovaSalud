@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         link: "./doctores.php",
       },
       { icon: "bx bx-user", text: "Pacientes", link: "./usuarios.php" },
+      { icon: "bx bxs-calendar", text: "Citas", link: "./citas.php" },
     ],
   };
 
