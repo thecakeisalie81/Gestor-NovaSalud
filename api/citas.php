@@ -48,12 +48,6 @@ function validarSesion()
 
 function CREARCITA($conn, $input)
 {
-    if (!isset($_SESSION['id'], $_SESSION['rol'])) {
-        http_response_code(401);
-        echo json_encode(["error" => "No autorizado"]);
-        exit;
-    }
-
     if (!$input) {
         http_response_code(400);
         echo json_encode(["error" => "Datos inválidos"]);

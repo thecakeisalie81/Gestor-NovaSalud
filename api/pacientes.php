@@ -54,6 +54,7 @@ function CREARPACIENTE($conn, $input)
         echo json_encode(["success" => false, "error" => "No se pudo crear el Doctor"]);
     }
 }
+
 function ACTUALIZARPACIENTE($conn, $input)
 {
     if (!$input || !isset($input['id'])) {

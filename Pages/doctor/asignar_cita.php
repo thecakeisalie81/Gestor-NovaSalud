@@ -1,6 +1,16 @@
 <?php
 include_once("../../system/session.php");
 
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Obtener doctores activos desde la API
+$urlPacientes = "http://localhost/Proyecto_Backend/api/pacientes.php";
+$responsePacientes = file_get_contents($urlPacientes);
+$pacientesData = json_decode($responsePacientes, true);
+$pacientes = is_array($pacientesData) ? $pacientesData : [];
 ?>
 
 
@@ -37,14 +47,14 @@ include_once("../../system/session.php");
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>Solicitud de cita</h1>
+                    <h1>Asignar cita</h1>
                     <ul class="breadcrumb">
                         <li>
                             <a href="#">Dashboard</a>
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
                         <li>
-                            <a class="active" href="#">Solicitud de cita</a>
+                            <a class="active" href="#">Asignar cita</a>
                         </li>
                     </ul>
                 </div>
@@ -56,7 +66,7 @@ include_once("../../system/session.php");
                         <h3>Crear nueva cita</h3>
                     </div>
 
-                    <form class="form-cita">
+                    <form class="form-cita" id="formCrearCita">
                         <div class="form-grid">
 
                             <div class="form-group">
@@ -71,19 +81,15 @@ include_once("../../system/session.php");
 
                             <div class="form-group">
                                 <label for="paciente">Paciente</label>
-                                <select id="paciente" name="paciente" required>
+                                <select id="paciente" name="paciente_id" required>
                                     <option value="">Seleccione un paciente</option>
-                                    <option value="1">Juan Pérez</option>
-                                    <option value="2">María González</option>
-                                </select>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="doctor">Doctor</label>
-                                <select id="doctor" name="doctor" required>
-                                    <option value="">Seleccione un doctor</option>
-                                    <option value="1">Dr. Pedro Gutiérrez</option>
-                                    <option value="2">Dra. Ana Soto</option>
+                                    <?php foreach ($pacientes as $paciente): ?>
+                                        <option value="<?= $paciente['id'] ?>">
+                                            <?= htmlspecialchars($paciente['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
                                 </select>
                             </div>
 
@@ -109,6 +115,7 @@ include_once("../../system/session.php");
     </section>
     <!-- CONTENT -->
     <script src="../../assets/js/pageOut.js"></script>
+    <script src="../../assets/js/asignarCita.js"></script>
 </body>
 
 </html>
