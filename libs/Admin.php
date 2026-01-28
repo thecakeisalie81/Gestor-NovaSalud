@@ -41,12 +41,25 @@ class Admin extends Usuario
         if ($this->id === null) {
             throw new Exception("No se puede actualizar sin ID");
         }
-        $query = "UPDATE " . $this->table . " SET name=?, age=?, phone=?, email=?, pass=?, rol=?, lastLogin=?   WHERE id=?";
+
+        $query = "
+        UPDATE {$this->table}
+        SET name = ?, age = ?, phone = ?, email = ?, rol = ?, lastLogin = ?
+        WHERE id = ?
+    ";
+
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('siissssi', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->lastLogin, $this->id);
-        if ($stmt->execute()) {
-            return $stmt->affected_rows > 0;
-        }
-        return false;
+        $stmt->bind_param(
+            "sissssi",
+            $this->name,
+            $this->age,
+            $this->phone,
+            $this->email,
+            $this->rol,
+            $this->lastLogin,
+            $this->id
+        );
+
+        return $stmt->execute();
     }
 }

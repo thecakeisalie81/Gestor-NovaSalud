@@ -145,7 +145,7 @@ $totalDoctoresInactivos = count($doctoresInactivos);
             <div class="table-data">
                 <div class="order">
                     <div class="head">
-                        <h3>Doctores activos</h3>
+                        <h3>Doctores Inactivos</h3>
                         <i class='bx bx-search'></i>
                         <i class='bx bx-filter'></i>
                     </div>
