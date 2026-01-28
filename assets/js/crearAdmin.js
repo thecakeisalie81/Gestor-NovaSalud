@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       phone: document.getElementById("create_phone").value,
       email: document.getElementById("create_email").value,
       pass: document.getElementById("create_pass").value,
-      rol: "Administrador",
+      rol: "admin",
     };
 
     console.log("📤 Enviando:", data);

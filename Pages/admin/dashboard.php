@@ -30,7 +30,7 @@ $totalPendientes = count($pendientes);
 
 //Trae todas las citas y filtra las que ya fueron asignadas
 $abiertas = array_filter($data, function ($cita) {
-    return isset($cita['state']) && $cita['state'] !== "pendiente" && $cita['state'] !== "finalizada";
+    return isset($cita['state']) && $cita['state'] === "confirmada";
 });
 $totalAbiertas = count($abiertas);
 

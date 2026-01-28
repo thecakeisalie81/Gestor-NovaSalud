@@ -11,8 +11,7 @@ if (isset($_POST['login'])) {
 
     function intentarLogin($conn, $tabla, $email, $pass, $rol)
     {
-
-        $sql = "SELECT id, pass FROM $tabla WHERE email = ?";
+        $sql = "SELECT id, pass, state FROM $tabla WHERE email = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
@@ -20,7 +19,16 @@ if (isset($_POST['login'])) {
 
         if ($row = mysqli_fetch_assoc($result)) {
 
+            // Verifica contraseña
             if (password_verify($pass, $row['pass'])) {
+
+                // 🔴 Si está inactivo, no deja iniciar sesión
+                if ($row['state'] !== 'Activo') {
+                    mysqli_stmt_close($stmt);
+                    return 'inactivo';
+                }
+
+                // ✅ Usuario activo → inicia sesión
                 $_SESSION['id']  = $row['id'];
                 $_SESSION['rol'] = $rol;
                 mysqli_stmt_close($stmt);
@@ -32,11 +40,17 @@ if (isset($_POST['login'])) {
         return false;
     }
 
-    if (
-        intentarLogin($conn, 'paciente', $email, $pass, 'paciente') ||
-        intentarLogin($conn, 'doctor',   $email, $pass, 'doctor')   ||
-        intentarLogin($conn, 'admin',    $email, $pass, 'admin')
-    ) {
+    $resultado = intentarLogin($conn, 'paciente', $email, $pass, 'paciente');
+
+    if ($resultado === false) {
+        $resultado = intentarLogin($conn, 'doctor', $email, $pass, 'doctor');
+    }
+
+    if ($resultado === false) {
+        $resultado = intentarLogin($conn, 'admin', $email, $pass, 'admin');
+    }
+
+    if ($resultado === true) {
 
         switch ($_SESSION['rol']) {
             case 'paciente':
@@ -50,8 +64,12 @@ if (isset($_POST['login'])) {
                 break;
         }
         exit;
+    } elseif ($resultado === 'inactivo') {
+
+        echo "❌ Tu cuenta está inactiva. Contacta al administrador.";
     } else {
-        echo "Credenciales inválidas";
+
+        echo "❌ Credenciales inválidas";
     }
 
     mysqli_close($conn);
