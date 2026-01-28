@@ -14,12 +14,19 @@ switch ($method) {
         OBTENERDOCTOR($conn);
         break;
     case 'POST':
+        validarSesionAdmin();
         CREARDOCTOR($conn, $input);
         break;
     case 'PUT':
-        ACTUALIZARDOCTOR($conn, $input);
+        validarSesionAdmin();
+        if (isset($input['activar']) && $input['activar'] === true) {
+            ACTIVARDOCTOR($conn, $input);
+        } else {
+            ACTUALIZARDOCTOR($conn, $input);
+        }
         break;
     case 'DELETE':
+        validarSesionAdmin();
         BORRARDOCTOR($conn, $input);
         break;
 }
@@ -27,7 +34,7 @@ switch ($method) {
 
 function OBTENERDOCTOR($conn)
 {
-    $query = "SELECT * FROM doctor WHERE state = 'Activo'";
+    $query = "SELECT * FROM doctor";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -36,6 +43,21 @@ function OBTENERDOCTOR($conn)
     echo json_encode($response);
 }
 
+function validarSesionAdmin()
+{
+    include_once("../system/session.php");
+
+    if (
+        !isset($_SESSION['id'], $_SESSION['rol']) ||
+        $_SESSION['rol'] !== 'admin'
+    ) {
+        http_response_code(403);
+        echo json_encode([
+            "error" => "Acceso denegado. Solo administradores."
+        ]);
+        exit;
+    }
+}
 
 function CREARDOCTOR($conn, $input)
 {
@@ -64,18 +86,33 @@ function ACTUALIZARDOCTOR($conn, $input)
         exit;
     }
 
-    $doctor = new Doctor($conn, $input['name'], $input['age'], $input['phone'], $input['email'], $input['rol'], $input['specialty']);
-    $doctor->setPassword($input['pass']);
+    $doctor = new Doctor(
+        $conn,
+        $input['name'],
+        $input['age'],
+        $input['phone'],
+        $input['email'],
+        $input['rol'],
+        $input['specialty']
+    );
+
     $doctor->setId((int)$input['id']);
 
     if ($doctor->update()) {
         http_response_code(200);
-        echo json_encode(["success" => true, "message" => "Datos del doctor actualizados"]);
+        echo json_encode([
+            "success" => true,
+            "message" => "Datos del doctor actualizados"
+        ]);
     } else {
         http_response_code(404);
-        echo json_encode(["success" => false, "error" => "Doctor no encontrado"]);
+        echo json_encode([
+            "success" => false,
+            "error" => "Doctor no encontrado"
+        ]);
     }
 }
+
 
 function BORRARDOCTOR($conn, $input)
 {
@@ -94,5 +131,31 @@ function BORRARDOCTOR($conn, $input)
     } else {
         http_response_code(404);
         echo json_encode(["success" => false, "error" => "Doctor no encontrado"]);
+    }
+}
+
+function ACTIVARDOCTOR($conn, $input)
+{
+    if (!$input || !isset($input['id'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Falta ID"]);
+        exit;
+    }
+
+    $doctor = new Doctor($conn, "", 0, 0, "", "", "");
+    $doctor->setId((int)$input['id']);
+
+    if ($doctor->activar()) {
+        http_response_code(200);
+        echo json_encode([
+            "success" => true,
+            "message" => "Doctor marcado como Activo"
+        ]);
+    } else {
+        http_response_code(404);
+        echo json_encode([
+            "success" => false,
+            "error" => "Doctor no encontrado"
+        ]);
     }
 }

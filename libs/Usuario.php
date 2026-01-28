@@ -92,6 +92,23 @@ abstract class Usuario
 
     abstract public function create();
     abstract public function update();
+    public function activar()
+    {
+        if ($this->id === null) {
+            throw new Exception("No se puede activar sin ID");
+        }
+
+        $query = "UPDATE " . $this->table . " SET state=? WHERE id=?";
+        $stmt = $this->conn->prepare($query);
+        $finalState = "Activo";
+        $stmt->bind_param('si', $finalState, $this->id);
+
+        if ($stmt->execute()) {
+            return $stmt->affected_rows > 0;
+        }
+        return false;
+    }
+
     public function delete()
     {
         if ($this->id === null) {

@@ -7,10 +7,13 @@ if (!isset($_SESSION['id'])) {
 }
 
 // Obtener doctores activos desde la API
+
 $urlDoctores = "http://localhost/Proyecto_Backend/api/doctores.php";
 $responseDoctores = file_get_contents($urlDoctores);
 $doctoresData = json_decode($responseDoctores, true);
-$doctores = $doctoresData['data'] ?? [];
+$doctoresActivos = array_filter($doctoresData['data'], function ($doctor) {
+    return isset($doctor['state']) && $doctor['state'] === "Activo";
+});
 ?>
 
 
@@ -84,7 +87,7 @@ $doctores = $doctoresData['data'] ?? [];
                                 <select id="doctor" name="doctor_id" required>
                                     <option value="">Seleccione un doctor</option>
 
-                                    <?php foreach ($doctores as $doctor): ?>
+                                    <?php foreach ($doctoresActivos as $doctor): ?>
                                         <option value="<?= $doctor['id'] ?>">
                                             <?= htmlspecialchars($doctor['name']) ?>
                                         </option>

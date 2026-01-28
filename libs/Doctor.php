@@ -39,9 +39,9 @@ class Doctor extends Usuario
         if ($this->id === null) {
             throw new Exception("No se puede actualizar sin ID");
         }
-        $query = "UPDATE " . $this->table . " SET name=?, age=?, phone=?, email=?, pass=?, rol=?, specialty=?  WHERE id=?";
+        $query = "UPDATE " . $this->table . " SET name=?, age=?, phone=?, email=?, rol=?, specialty=?  WHERE id=?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('siissssi', $this->name, $this->age, $this->phone, $this->email, $this->password, $this->rol, $this->specialty, $this->id);
+        $stmt->bind_param('siisssi', $this->name, $this->age, $this->phone, $this->email, $this->rol, $this->specialty, $this->id);
         return $stmt->execute();
     }
 }

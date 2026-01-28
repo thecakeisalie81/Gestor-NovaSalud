@@ -57,13 +57,17 @@ document.addEventListener("DOMContentLoaded", () => {
         text: "Dashboard",
         link: "./dashboard.php",
       },
+      { icon: "bx bxs-calendar", text: "Citas", link: "./citas.php" },
       {
         icon: "bx bx-male-female",
         text: "Doctores",
         link: "./doctores.php",
       },
-      { icon: "bx bx-user", text: "Pacientes", link: "./usuarios.php" },
-      { icon: "bx bxs-calendar", text: "Citas", link: "./citas.php" },
+      {
+        icon: "bx bx-user",
+        text: "Administradores",
+        link: "./administradores.php",
+      },
     ],
   };
 
