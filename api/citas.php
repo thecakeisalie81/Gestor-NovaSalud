@@ -25,6 +25,26 @@ switch ($method) {
         break;
 }
 
+
+/**
+ * GET /api/citas.php
+ * Obtiene la lista completa de citas
+ *
+ * @return JSON Array
+ * [
+ *   {
+ *     id: int,
+ *     fecha: string,
+ *     hour: string,
+ *     paciente: int,
+ *     doctor: int,
+ *     state: string,
+ *     description: string
+ *   }
+ * ]
+ *
+ * @http 200 OK
+ */
 function OBTENERCITA($conn)
 {
     $query = "SELECT * FROM cita";
@@ -35,7 +55,13 @@ function OBTENERCITA($conn)
     echo json_encode($rows);
 }
 
-
+/**
+ * Valida que exista una sesión activa
+ *
+ * @return void
+ *
+ * @http 401 No autorizado
+ */
 function validarSesion()
 {
     include_once("../system/session.php");
@@ -46,6 +72,36 @@ function validarSesion()
     }
 }
 
+
+/**
+ * POST /api/citas.php
+ * Crea una nueva cita médica
+ *
+ * Requiere sesión activa (paciente o doctor)
+ *
+ * Lógica por rol:
+ * - Paciente: usa su ID de sesión y debe indicar doctor
+ * - Doctor: usa su ID de sesión y debe indicar paciente
+ *
+ * @param fecha string        Fecha de la cita (YYYY-MM-DD)
+ * @param hour string         Hora de la cita (HH:MM)
+ * @param paciente int|null   ID del paciente
+ * @param doctor int|null     ID del doctor
+ * @param state string        Estado inicial de la cita
+ * @param description string Descripción o motivo
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   id: int
+ * }
+ *
+ * @http 201 Created
+ * @http 400 Datos inválidos
+ * @http 401 No autorizado
+ * @http 403 Rol no permitido
+ * @http 500 Error interno
+ */
 function CREARCITA($conn, $input)
 {
     if (!$input) {
@@ -58,7 +114,7 @@ function CREARCITA($conn, $input)
     $paciente = $input['paciente'] ?? null;
     $doctor   = $input['doctor'] ?? null;
 
-    // 🎭 Lógica según rol
+    // Lógica según rol
     if ($_SESSION['rol'] === 'paciente') {
         $paciente = $_SESSION['id'];
 
@@ -108,6 +164,25 @@ function CREARCITA($conn, $input)
 }
 
 
+/**
+ * PUT /api/citas.php
+ * Actualiza el estado de una cita
+ *
+ * Requiere sesión activa
+ *
+ * @param id int       ID de la cita
+ * @param state string Nuevo estado de la cita
+ *
+ * @return JSON
+ * {
+ *   success: boolean
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Falta ID o state
+ * @http 401 No autorizado
+ * @http 404 Cita no encontrada
+ */
 function ACTUALIZARCITA($conn, $input)
 {
     if (!$input || !isset($input['id'], $input['state'])) {
@@ -130,6 +205,26 @@ function ACTUALIZARCITA($conn, $input)
     }
 }
 
+
+/**
+ * DELETE /api/citas.php
+ * Elimina una cita de forma lógica (finalizada)
+ *
+ * Requiere sesión activa
+ *
+ * @param id int ID de la cita
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 401 No autorizado
+ * @http 404 Cita no encontrada
+ */
 function BORRARCITA($conn, $input)
 {
     if (!$input || !isset($input['id'])) {

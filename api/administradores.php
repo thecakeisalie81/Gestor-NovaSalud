@@ -29,6 +29,26 @@ switch ($method) {
 }
 
 
+/**
+ * GET /api/admin.php
+ * Obtiene la lista de administradores
+ *
+ * @return JSON Array
+ * [
+ *   {
+ *     id: int,
+ *     name: string,
+ *     age: int,
+ *     phone: string,
+ *     email: string,
+ *     rol: string,
+ *     lastLogin: string,
+ *     state: string
+ *   }
+ * ]
+ *
+ * @http 200 OK
+ */
 function OBTENERADMIN($conn)
 {
     $query = "SELECT * FROM admin";
@@ -40,6 +60,27 @@ function OBTENERADMIN($conn)
 }
 
 
+/**
+ * POST /api/admin.php
+ * Crea un nuevo administrador
+ *
+ * @param name string      Nombre completo
+ * @param age int          Edad
+ * @param phone string     Teléfono
+ * @param email string     Correo electrónico
+ * @param pass string      Contraseña (cifrada)
+ * @param rol string       Rol del usuario (admin)
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   id: int
+ * }
+ *
+ * @http 201 Created
+ * @http 400 Faltan datos obligatorios
+ * @http 500 Error interno
+ */
 function CREARADMIN($conn, $input)
 {
     try {
@@ -87,6 +128,26 @@ function CREARADMIN($conn, $input)
 }
 
 
+/**
+ * PUT /api/admin.php
+ * Actualiza los datos de un administrador
+ *
+ * @param id int          ID del administrador
+ * @param name string     Nombre completo
+ * @param age int         Edad
+ * @param phone string    Teléfono
+ * @param email string    Correo electrónico
+ *
+ * @return JSON
+ * {
+ *   success: boolean
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 404 Administrador no encontrado
+ * @http 500 Error interno
+ */
 function ACTUALIZARADMIN($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
@@ -127,6 +188,23 @@ function ACTUALIZARADMIN($conn, $input)
     }
 }
 
+
+/**
+ * PUT /api/admin.php
+ * Cambia el estado de un administrador a Activo
+ *
+ * @param id int ID del administrador
+ * @param accion string Debe ser "cambiar_estado"
+ *
+ * @return JSON
+ * {
+ *   success: boolean
+ * }
+ *
+ * @http 200 OK
+ * @http 400 ID requerido
+ * @http 500 Error interno
+ */
 function CAMBIARESTADOADMIN($conn, $input)
 {
     if (!isset($input['id'])) {
@@ -157,9 +235,22 @@ function CAMBIARESTADOADMIN($conn, $input)
 }
 
 
-
-
-
+/**
+ * DELETE /api/admin.php
+ * Elimina un administrador de forma lógica (estado Inactivo)
+ *
+ * @param id int ID del administrador
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 404 Administrador no encontrado
+ */
 function BORRARADMIN($conn, $input)
 {
     if (!$input || !isset($input['id'])) {

@@ -32,6 +32,29 @@ switch ($method) {
 }
 
 
+/**
+ * GET /api/doctores.php
+ * Obtiene la lista completa de doctores
+ *
+ * @return JSON
+ * {
+ *   total: int,
+ *   data: [
+ *     {
+ *       id: int,
+ *       name: string,
+ *       age: int,
+ *       phone: string,
+ *       email: string,
+ *       rol: string,
+ *       specialty: string,
+ *       state: string
+ *     }
+ *   ]
+ * }
+ *
+ * @http 200 OK
+ */
 function OBTENERDOCTOR($conn)
 {
     $query = "SELECT * FROM doctor";
@@ -43,6 +66,14 @@ function OBTENERDOCTOR($conn)
     echo json_encode($response);
 }
 
+
+/**
+ * Valida que la sesión pertenezca a un administrador
+ *
+ * @return void
+ *
+ * @http 403 Acceso denegado si no es admin
+ */
 function validarSesionAdmin()
 {
     include_once("../system/session.php");
@@ -59,6 +90,30 @@ function validarSesionAdmin()
     }
 }
 
+
+/**
+ * POST /api/doctores.php
+ * Crea un nuevo doctor (solo administrador)
+ *
+ * @param name string       Nombre completo
+ * @param age int           Edad
+ * @param phone string      Teléfono
+ * @param email string      Correo electrónico
+ * @param pass string       Contraseña (cifrada)
+ * @param rol string        Rol del usuario (doctor)
+ * @param specialty string  Especialidad médica
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   id: int
+ * }
+ *
+ * @http 201 Created
+ * @http 400 Datos inválidos
+ * @http 403 Acceso denegado
+ * @http 500 Error interno
+ */
 function CREARDOCTOR($conn, $input)
 {
     if (!$input) {
@@ -78,6 +133,30 @@ function CREARDOCTOR($conn, $input)
     }
 }
 
+
+/**
+ * PUT /api/doctores.php
+ * Actualiza los datos de un doctor existente (solo administrador)
+ *
+ * @param id int             ID del doctor
+ * @param name string        Nombre completo
+ * @param age int            Edad
+ * @param phone string       Teléfono
+ * @param email string       Correo electrónico
+ * @param rol string         Rol del usuario
+ * @param specialty string   Especialidad médica
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 403 Acceso denegado
+ * @http 404 Doctor no encontrado
+ */
 function ACTUALIZARDOCTOR($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
@@ -114,6 +193,24 @@ function ACTUALIZARDOCTOR($conn, $input)
 }
 
 
+/**
+ * DELETE /api/doctores.php
+ * Elimina un doctor de forma lógica (estado Inactivo)
+ * (solo administrador)
+ *
+ * @param id int ID del doctor
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 403 Acceso denegado
+ * @http 404 Doctor no encontrado
+ */
 function BORRARDOCTOR($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
@@ -134,6 +231,25 @@ function BORRARDOCTOR($conn, $input)
     }
 }
 
+
+/**
+ * PUT /api/doctores.php
+ * Activa un doctor previamente inactivado (solo administrador)
+ *
+ * @param id int ID del doctor
+ * @param activar boolean Debe ser true
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Falta ID
+ * @http 403 Acceso denegado
+ * @http 404 Doctor no encontrado
+ */
 function ACTIVARDOCTOR($conn, $input)
 {
     if (!$input || !isset($input['id'])) {

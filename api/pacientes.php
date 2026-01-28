@@ -25,6 +25,26 @@ switch ($method) {
 }
 
 
+/**
+ * GET /api/pacientes.php
+ * Obtiene todos los pacientes registrados
+ *
+ * @return JSON Array
+ * [
+ *   {
+ *     id: int,
+ *     name: string,
+ *     age: int,
+ *     phone: string,
+ *     email: string,
+ *     rol: string,
+ *     address: string,
+ *     state: string
+ *   }
+ * ]
+ *
+ * @http 200 OK
+ */
 function OBTENERPACIENTE($conn)
 {
     $query = "SELECT * FROM paciente";
@@ -36,6 +56,28 @@ function OBTENERPACIENTE($conn)
 }
 
 
+/**
+ * POST /api/pacientes.php
+ * Crea un nuevo paciente
+ *
+ * @param name string  Nombre completo del paciente
+ * @param age int      Edad del paciente
+ * @param phone string Teléfono de contacto
+ * @param email string Correo electrónico
+ * @param pass string  Contraseña (se almacena cifrada)
+ * @param rol string   Rol del usuario (paciente)
+ * @param address string Dirección del paciente
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   id: int
+ * }
+ *
+ * @http 201 Created
+ * @http 400 Datos inválidos
+ * @http 500 Error interno
+ */
 function CREARPACIENTE($conn, $input)
 {
     if (!$input) {
@@ -55,6 +97,30 @@ function CREARPACIENTE($conn, $input)
     }
 }
 
+
+/**
+ * PUT /api/pacientes.php
+ * Actualiza los datos de un paciente existente
+ *
+ * @param id int        ID del paciente
+ * @param name string  Nombre completo
+ * @param age int      Edad
+ * @param phone string Teléfono
+ * @param email string Correo electrónico
+ * @param pass string  Contraseña (opcional)
+ * @param rol string   Rol del usuario
+ * @param address string Dirección
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 404 Paciente no encontrado
+ */
 function ACTUALIZARPACIENTE($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
@@ -75,6 +141,24 @@ function ACTUALIZARPACIENTE($conn, $input)
         echo json_encode(["success" => false, "error" => "Paciente no encontrado"]);
     }
 }
+
+
+/**
+ * DELETE /api/pacientes.php
+ * Elimina un paciente de forma lógica (estado Inactivo)
+ *
+ * @param id int ID del paciente
+ *
+ * @return JSON
+ * {
+ *   success: boolean,
+ *   message: string
+ * }
+ *
+ * @http 200 OK
+ * @http 400 Datos inválidos
+ * @http 404 Paciente no encontrado
+ */
 function BORRARPACIENTE($conn, $input)
 {
     if (!$input || !isset($input['id'])) {
