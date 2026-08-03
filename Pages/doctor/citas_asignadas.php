@@ -1,7 +1,7 @@
 <?php
 include_once("../../system/session.php");
 //Se usa para mostrar el nombre del paciente asignado a las citas
-$response = file_get_contents("http://localhost/Proyecto_Backend/api/pacientes.php");
+$response = file_get_contents("http://localhost/Gestor-NovaSalud/api/pacientes.php");
 $pacientes = json_decode($response, true);
 $pacientesMap = [];
 foreach ($pacientes as $paciente) {
@@ -9,7 +9,7 @@ foreach ($pacientes as $paciente) {
 }
 
 //Trae todas las citas y filtra las que son del doctor logeado, ademas de ser citas confirmadas
-$response = file_get_contents("http://localhost/Proyecto_Backend/api/citas.php");
+$response = file_get_contents("http://localhost/Gestor-NovaSalud/api/citas.php");
 $data = json_decode($response, true);
 $misCitas = array_filter($data, function ($cita) {
     return isset($cita['doctor']) && $cita['doctor'] === $_SESSION['id'] && $cita['state'] === 'confirmada';
@@ -39,7 +39,7 @@ unset($cita);
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- My CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/css/sidebar.css" />
     <link
         href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         rel="stylesheet" />

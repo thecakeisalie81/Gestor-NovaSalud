@@ -1,7 +1,7 @@
 <?php
 include_once("../../system/session.php");
 //Se usa para mostrar el doctor asignado a la cita
-$url = "http://localhost/Proyecto_Backend/api/doctores.php";
+$url = "http://localhost/Gestor-NovaSalud/api/doctores.php";
 $response = file_get_contents($url);
 $data = json_decode($response, true);
 $doctoresMap = [];
@@ -10,7 +10,7 @@ foreach ($data['data'] as $doctor) {
 }
 
 //Trae todas las citas y filtra las que estan pendientes de revision
-$response = file_get_contents("http://localhost/Proyecto_Backend/api/citas.php");
+$response = file_get_contents("http://localhost/Gestor-NovaSalud/api/citas.php");
 $data = json_decode($response, true);
 $pendientes = array_filter($data, function ($cita) {
     return isset($cita['state']) && $cita['state'] === "pendiente";
@@ -24,7 +24,7 @@ $abiertas = array_filter($data, function ($cita) {
 $totalAbiertas = count($abiertas);
 
 //Trae todas las citas confirmadas y no confirmadas
-$response = file_get_contents("http://localhost/Proyecto_Backend/api/citas.php");
+$response = file_get_contents("http://localhost/Gestor-NovaSalud/api/citas.php");
 $data = json_decode($response, true);
 $todasCitas = array_filter($data, function ($cita) {
     return isset($cita['state']) === "confirmada";
@@ -80,8 +80,8 @@ unset($cita);
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- My CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/sidebar.css" />
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/button.css" />
+    <link rel="stylesheet" href="../../assets/css/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/css/button.css" />
 
     <link
         href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"

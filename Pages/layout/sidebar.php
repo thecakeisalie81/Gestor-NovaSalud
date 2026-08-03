@@ -7,7 +7,7 @@ $rol = $_SESSION['rol'] ?? 'guest';
   <header>
     <div class="image-text">
       <span class="image">
-        <img src="/PROYECTO_BACKEND/assets/img/logo.png" alt="logo" />
+        <img src="../../assets/img/logo.png" alt="logo" />
       </span>
       <div class="text header-text">
         <span class="name">Clinica</span>

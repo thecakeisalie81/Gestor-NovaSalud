@@ -1,9 +1,18 @@
 <?php
 include_once("../../system/session.php");
 //Trae los admins que hay en la DB
-$url = "http://localhost/Proyecto_Backend/api/administradores.php";
+$url = "http://localhost/Gestor-NovaSalud/api/administradores.php";
 $response = file_get_contents($url);
-$data = json_decode($response, true);
+
+if ($response === false) {
+    $data = []; // si la API no responde, inicializa como array vacío
+} else {
+    $data = json_decode($response, true);
+    if (!is_array($data)) {
+        $data = []; // si la respuesta no es un array válido
+    }
+}
+
 $admins = array_filter($data, function ($admin) {
     return isset($admin['state']) && $admin['state'] === "Activo";
 });
@@ -29,9 +38,9 @@ $totalAdminsInactivos = count($adminsInactivos);
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- My CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/sidebar.css" />
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/button.css" />
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/modal.css" />
+    <link rel="stylesheet" href="../../assets/css/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/css/button.css" />
+    <link rel="stylesheet" href="../../assets/css/modal.css" />
     <link
         href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         rel="stylesheet" />

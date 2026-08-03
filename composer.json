@@ -1,0 +1,19 @@
+{
+    "name": "nova-salud/composer",
+    "description": "paquete para guardar librerias",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "NovaSalud\\Composer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "thecakeisalie81",
+            "email": "www.lui81@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^7.1"
+    }
+}

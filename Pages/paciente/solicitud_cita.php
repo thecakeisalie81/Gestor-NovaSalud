@@ -8,7 +8,7 @@ if (!isset($_SESSION['id'])) {
 
 // Obtener doctores activos desde la API
 
-$urlDoctores = "http://localhost/Proyecto_Backend/api/doctores.php";
+$urlDoctores = "http://localhost/Gestor-NovaSalud/api/doctores.php";
 $responseDoctores = file_get_contents($urlDoctores);
 $doctoresData = json_decode($responseDoctores, true);
 $doctoresActivos = array_filter($doctoresData['data'], function ($doctor) {
@@ -28,8 +28,8 @@ $doctoresActivos = array_filter($doctoresData['data'], function ($doctor) {
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- My CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/sidebar.css" />
-    <link rel="stylesheet" href="/PROYECTO_BACKEND/assets/css/solicitud.css" />
+    <link rel="stylesheet" href="../../assets/css/sidebar.css" />
+    <link rel="stylesheet" href="../../assets/css/solicitud.css" />
     <link
         href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         rel="stylesheet" />
