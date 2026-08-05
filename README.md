@@ -3,7 +3,7 @@
 
 Este proyecto es un Sistema de Gestión de Citas Médicas desarrollado como una aplicacion web, el objetivo de este es administrar las citas, pacientes, y doctores de una clinica privada ficticia llamada Clinica NovaSalud.
 
-El sistema está pensado como un proyecto académico/práctico, aplicando buenas prácticas de desarrollo backend, seguridad básica y consumo de APIs REST.
+El sistema está pensado como un proyecto académico/práctico, aplicando buenas prácticas de desarrollo backend, seguridad básica mediante sesiones y roles ademas de consumo de APIs REST.
 
 
 ## ⚙️ Instalación y configuración
