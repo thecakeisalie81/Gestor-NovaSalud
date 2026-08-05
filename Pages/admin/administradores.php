@@ -1,29 +1,6 @@
 <?php
 include_once("../../system/session.php");
-//Trae los admins que hay en la DB
-$url = "http://localhost/Gestor-NovaSalud/api/administradores.php";
-$response = file_get_contents($url);
-
-if ($response === false) {
-    $data = []; // si la API no responde, inicializa como array vacío
-} else {
-    $data = json_decode($response, true);
-    if (!is_array($data)) {
-        $data = []; // si la respuesta no es un array válido
-    }
-}
-
-$admins = array_filter($data, function ($admin) {
-    return isset($admin['state']) && $admin['state'] === "Activo";
-});
-$totalAdminsActivos = count($admins);
-
-$adminsInactivos = array_filter($data, function ($admin) {
-    return isset($admin['state']) && $admin['state'] === "Inactivo";
-});
-$totalAdminsInactivos = count($adminsInactivos);
-
-
+include_once("../../src/dashboardAdmin.php");
 ?>
 
 

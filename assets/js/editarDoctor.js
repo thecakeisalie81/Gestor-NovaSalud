@@ -1,6 +1,6 @@
 document.querySelectorAll(".js-editar-doctor").forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    e.stopPropagation(); // 🛑 importante
+    e.stopPropagation();
 
     document.getElementById("modalEditarDoctor").style.display = "flex";
 
@@ -36,10 +36,10 @@ document
     };
 
     const res = await fetch(
-      "http://localhost/Proyecto_Backend/api/doctores.php",
+      "http://localhost/Gestor-NovaSalud/api/doctores.php",
       {
         method: "PUT",
-        credentials: "include", // 🔥 SESIÓN
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

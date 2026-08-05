@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       email: document.getElementById("edit_admin_email").value,
     };
 
-    fetch("http://localhost/Proyecto_Backend/api/administradores.php", {
+    fetch("http://localhost/Gestor-NovaSalud/api/administradores.php", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

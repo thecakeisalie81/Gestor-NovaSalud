@@ -6,7 +6,7 @@ document.querySelectorAll(".js-activar-doctor").forEach((btn) => {
     if (!confirm("¿Marcar doctor como ACTIVO?")) return;
 
     const res = await fetch(
-      "http://localhost/Proyecto_Backend/api/doctores.php",
+      "http://localhost/Gestor-NovaSalud/api/doctores.php",
       {
         method: "PUT",
         credentials: "include",
@@ -18,9 +18,11 @@ document.querySelectorAll(".js-activar-doctor").forEach((btn) => {
     const result = await res.json();
 
     if (result.success) {
+      alert("Doctor marcado como Activo");
       location.reload();
     } else {
-      alert(result.error || "Error");
+      console.error(err);
+      alert("Error de conexión con el servidor");
     }
   });
 });

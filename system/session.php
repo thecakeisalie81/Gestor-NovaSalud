@@ -6,7 +6,7 @@ header("Expires: 0"); // Proxies
 
 session_start();
 if (!isset($_SESSION['id']) || !isset($_SESSION['rol'])) {
-    header("Location: /PROYECTO_BACKEND/Pages/login-registro.php");
+    header("Location: /Gestor-NovaSalud/Pages/login-registro.php");
     exit();
 }
 

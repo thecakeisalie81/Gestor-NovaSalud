@@ -6,12 +6,25 @@ document
     const data = {
       fecha: document.getElementById("fecha").value,
       hour: document.getElementById("hora").value,
-      doctor: document.getElementById("doctor").value,
       description: document.getElementById("descripcion").value,
       state: "pendiente",
     };
 
-    fetch("http://localhost/Proyecto_Backend/api/citas.php", {
+    // Paciente selecciona doctor
+    const doctorField = document.getElementById("doctor");
+    if (doctorField) {
+      data.doctor = doctorField.value;
+    }
+
+    // Doctor selecciona paciente
+    const pacienteField = document.getElementById("paciente");
+    if (pacienteField) {
+      data.paciente = pacienteField.value;
+    }
+
+    console.log("Datos enviados:", data); // <-- para depurar
+
+    fetch("http://localhost/Gestor-NovaSalud/api/citas.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

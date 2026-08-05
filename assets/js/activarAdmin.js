@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!confirm("¿Deseas activar este administrador?")) return;
 
-      fetch("http://localhost/Proyecto_Backend/api/administradores.php", {
+      fetch("http://localhost/Gestor-NovaSalud/api/administradores.php", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

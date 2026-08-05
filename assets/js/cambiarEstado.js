@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function actualizarEstado(id, estado) {
-  fetch("http://localhost/Proyecto_Backend/api/citas.php", {
-    method: "PUT",
+  fetch("http://localhost/Gestor-NovaSalud/api/citas.php", {
+    method: "PUT", // usamos POST
     headers: {
       "Content-Type": "application/json",
     },

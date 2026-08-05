@@ -7,7 +7,7 @@ document.querySelectorAll(".js-inactivar-doctor").forEach((btn) => {
 
     try {
       const res = await fetch(
-        "http://localhost/Proyecto_Backend/api/doctores.php",
+        "http://localhost/Gestor-NovaSalud/api/doctores.php",
         {
           method: "DELETE",
           credentials: "include", // 🔥 sesión admin

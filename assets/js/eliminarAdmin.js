@@ -9,7 +9,7 @@ document.querySelectorAll(".js-inactivar-admin").forEach((btn) => {
     if (!confirm("¿Deseas marcar este administrador como inactivo?")) return;
 
     const res = await fetch(
-      "http://localhost/Proyecto_Backend/api/administradores.php",
+      "http://localhost/Gestor-NovaSalud/api/administradores.php",
       {
         method: "DELETE",
         credentials: "include",
@@ -21,6 +21,7 @@ document.querySelectorAll(".js-inactivar-admin").forEach((btn) => {
     const result = await res.json();
 
     if (result.success) {
+      alert("✅ Administrador Desactivado");
       location.reload();
     } else {
       alert(result.error || "No se pudo desactivar el administrador");

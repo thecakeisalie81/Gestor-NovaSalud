@@ -29,7 +29,7 @@ document
     };
 
     const res = await fetch(
-      "http://localhost/Proyecto_Backend/api/doctores.php",
+      "http://localhost/Gestor-NovaSalud/api/doctores.php",
       {
         method: "POST",
         credentials: "include", // 🔐 sesión admin

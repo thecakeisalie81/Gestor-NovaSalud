@@ -1,16 +1,6 @@
 <?php
 include_once("../../system/session.php");
-
-if (!isset($_SESSION['id'])) {
-    header("Location: login.php");
-    exit;
-}
-
-// Obtener doctores activos desde la API
-$urlPacientes = "http://localhost/Gestor-NovaSalud/api/pacientes.php";
-$responsePacientes = file_get_contents($urlPacientes);
-$pacientesData = json_decode($responsePacientes, true);
-$pacientes = is_array($pacientesData) ? $pacientesData : [];
+include_once("../../src/cargarPacientesActivos.php");
 ?>
 
 
@@ -81,7 +71,7 @@ $pacientes = is_array($pacientesData) ? $pacientesData : [];
 
                             <div class="form-group">
                                 <label for="paciente">Paciente</label>
-                                <select id="paciente" name="paciente_id" required>
+                                <select id="paciente" name="paciente" required>
                                     <option value="">Seleccione un paciente</option>
 
                                     <?php foreach ($pacientes as $paciente): ?>
@@ -115,7 +105,7 @@ $pacientes = is_array($pacientesData) ? $pacientesData : [];
     </section>
     <!-- CONTENT -->
     <script src="../../assets/js/pageOut.js"></script>
-    <script src="../../assets/js/asignarCita.js"></script>
+    <script src="../../assets/js/solicitudCita.js"></script>
 </body>
 
 </html>

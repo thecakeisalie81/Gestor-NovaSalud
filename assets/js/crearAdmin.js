@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const res = await fetch(
-        "http://localhost/Proyecto_Backend/api/administradores.php",
+        "http://localhost/Gestor-NovaSalud/api/administradores.php",
         {
           method: "POST",
           credentials: "include",
